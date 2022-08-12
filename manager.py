@@ -1,11 +1,14 @@
-import sqlite3, hashlib
 from tkinter import *
 
 window = Tk()
 
 window.title("Password Manager")
 
-def createPassword():
+
+def createMasterPassword():
+    """
+    Create a master password for the manager
+    """
     window.geometry("250x170")
 
     lbl = Label(window, text="Create Master Password")
@@ -27,15 +30,22 @@ def createPassword():
     lbl2.pack()
 
     def savePassword():
+        """
+        Check if the entered master password matches
+        """
         if txt.get() == txt1.get():
             pass
         else:
-            lbl2.config(text="Passwords do not match")
+            lbl2.config(text="Passwords do not match", fg='#FF0000')
 
     btn = Button(window, text="Save", command=savePassword)
     btn.pack(pady=10)
 
+
 def loginScreen():
+    """
+    Login Screen for a user with a pre-existing master password
+    """
     window.geometry("250x120")
 
     lbl = Label(window, text="Enter Master Password")
@@ -51,9 +61,12 @@ def loginScreen():
     lbl1.pack()
 
     def checkPassword():
+        """
+        Check that the master password is valid
+        """
         password = "test"
         if password == txt.get():
-            passwordVault()
+            passwordManager()
         else:
             txt.delete(0, 'end')
             lbl1.config(text="Wrong Password")
@@ -62,7 +75,10 @@ def loginScreen():
     btn.pack(pady=10)
 
 
-def passwordVault():
+def passwordManager():
+    """
+    Main password manager interface
+    """
     for widget in window.winfo_children():
         widget.destroy()
     window.geometry("700x350")
@@ -72,6 +88,6 @@ def passwordVault():
     lbl.pack()
 
 
-createPassword()
-#loginScreen()
+createMasterPassword()
+# loginScreen()
 window.mainloop()
