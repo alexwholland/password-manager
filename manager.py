@@ -1,4 +1,15 @@
 from tkinter import *
+import sqlite3
+
+# Database
+with sqlite3.connect("password_manager.db") as db:
+    cursor = db.cursor()
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS masterpassword(
+id INTEGER PRIMARY KEY,
+password TEXT NOT NULL);
+""")
+
 
 window = Tk()
 
@@ -34,7 +45,13 @@ def createMasterPassword():
         Check if the entered master password matches
         """
         if txt.get() == txt1.get():
-            pass
+            hashedPassword = txt.get()
+
+            insert_password = """INSERT INTO masterpassword(password)
+            VALUES(?) """
+            cursor.execute(insert_password, [(hashedPassword)])
+            db.commit()
+            passwordManager()
         else:
             lbl2.config(text="Passwords do not match", fg='#FF0000')
 
@@ -60,12 +77,18 @@ def loginScreen():
     lbl1 = Label(window)
     lbl1.pack()
 
+
+    def getMasterPassword():
+        checkHashedPassword = txt.get()
+        cursor.execute("SELECT * FROM masterpassword WHERE id = 1 AND password = ?", [(checkHashedPassword)])
+        return cursor.fetchall()
     def checkPassword():
         """
         Check that the master password is valid
         """
-        password = "test"
-        if password == txt.get():
+
+        match = getMasterPassword()
+        if match:
             passwordManager()
         else:
             txt.delete(0, 'end')
@@ -88,6 +111,9 @@ def passwordManager():
     lbl.pack()
 
 
-createMasterPassword()
-# loginScreen()
+cursor.execute("SELECT * FROM masterpassword")
+if cursor.fetchall():
+    loginScreen()
+else:
+    createMasterPassword()
 window.mainloop()
