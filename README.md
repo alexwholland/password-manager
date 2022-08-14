@@ -2,8 +2,9 @@
 
 Locally store all your passwords securely, so you don't have to worry about remembering them.
 
-##TODO
+## TODO
 
 - Create main passowrd manager GUI
-- Create password database
+- Add support for website url, password, username
+- Add password encryption
 - TBD
