@@ -1,5 +1,5 @@
 from tkinter import *
-import sqlite3
+import sqlite3, hashlib
 
 # Database
 with sqlite3.connect("password_manager.db") as db:
@@ -16,6 +16,12 @@ window = Tk()
 window.title("Password Manager")
 
 
+def hashPassword(input):
+    hash = hashlib.md5(input)
+    hash = hash.hexdigest()
+
+    return hash
+
 def createMasterPassword():
     """
     Create a master password for the manager
@@ -26,6 +32,7 @@ def createMasterPassword():
     lbl.config(anchor=CENTER)
     lbl.pack()
 
+    # Should be txt1 = Entry(window, width=20, show="*") in final product
     txt = Entry(window, width=20)
     txt.pack()
     txt.focus()
@@ -33,6 +40,7 @@ def createMasterPassword():
     lbl1 = Label(window, text="Re-enter Password")
     lbl1.pack()
 
+    # Should be txt1 = Entry(window, width=20, show="*") in final product
     txt1 = Entry(window, width=20)
     txt1.pack()
     txt1.focus()
@@ -45,7 +53,7 @@ def createMasterPassword():
         Check if the entered master password matches
         """
         if txt.get() == txt1.get():
-            hashedPassword = txt.get()
+            hashedPassword = hashPassword(txt.get().encode('utf-8'))
 
             insert_password = """INSERT INTO masterpassword(password)
             VALUES(?) """
@@ -79,8 +87,9 @@ def loginScreen():
 
 
     def getMasterPassword():
-        checkHashedPassword = txt.get()
+        checkHashedPassword = hashPassword(txt.get().encode('utf-8'))
         cursor.execute("SELECT * FROM masterpassword WHERE id = 1 AND password = ?", [(checkHashedPassword)])
+        print(checkHashedPassword)
         return cursor.fetchall()
     def checkPassword():
         """
@@ -88,6 +97,9 @@ def loginScreen():
         """
 
         match = getMasterPassword()
+
+        print(match)
+
         if match:
             passwordManager()
         else:
