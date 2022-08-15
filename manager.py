@@ -1,5 +1,8 @@
 from tkinter import *
 import sqlite3, hashlib
+from tkinter import simpledialog
+from functools import partial
+
 
 # Database
 with sqlite3.connect("password_manager.db") as db:
@@ -9,6 +12,22 @@ CREATE TABLE IF NOT EXISTS masterpassword(
 id INTEGER PRIMARY KEY,
 password TEXT NOT NULL);
 """)
+
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS vault(
+id INTEGER PRIMARY KEY,
+website TEXT NOT NULL,
+username TEXT NOT NULL,
+password TEXT NOT NULL);
+""")
+
+
+# Popup
+def popUp(text):
+    answer = simpledialog.askstring("input string", text)
+    return answer
+
 
 
 window = Tk()
@@ -116,11 +135,43 @@ def passwordManager():
     """
     for widget in window.winfo_children():
         widget.destroy()
+
+    def addEntry():
+        text1 = "Website"
+        text2 = "Username"
+        text3 = "Password"
+
+        website = popUp(text1)
+        username = popUp(text2)
+        password = popUp(text3)
+
+        insert_fields = """INSERT INTO vault(website,username,password)
+        VALUES(?, ?, ?)"""
+
+        cursor.execute(insert_fields, (website, username, password))
+        db.commit()
+
+        passwordManager()
+
+    def removeEntry(input):
+        cursor.execute("DELETE FROM vault WHERE id = ?", (input,))
+        db.commit()
+        passwordManager()
+
     window.geometry("700x350")
 
     lbl = Label(window, text="Password Manager")
-    lbl.config(anchor=CENTER)
-    lbl.pack()
+    lbl.grid(column=1)
+
+    btn = Button(window, text="+", command=addEntry)
+    btn.grid(column=1, pady=10)
+
+    lbl = Label(window, text="Website")
+    lbl.grid(row=2, column=0, padx=80)
+    lbl = Label(window, text="Username")
+    lbl.grid(row=2, column=1, padx=80)
+    lbl = Label(window, text="Password")
+    lbl.grid(row=2, column=2, padx=80)
 
 
 cursor.execute("SELECT * FROM masterpassword")
