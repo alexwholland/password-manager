@@ -4,7 +4,7 @@ Locally store all your passwords securely, so you don't have to worry about reme
 
 ## TODO
 
-- Create main passowrd manager GUI
-- Add support for website url, password, username
-- Add password encryption
+- Fix window sizing cutoffs
+- Add recovery key feature
+- Add password and data field encryption
 - TBD
