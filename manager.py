@@ -173,6 +173,29 @@ def passwordManager():
     lbl = Label(window, text="Password")
     lbl.grid(row=2, column=2, padx=80)
 
+    cursor.execute("SELECT * FROM vault")
+    if (cursor.fetchall() != None):
+        i = 0
+        while True:
+            cursor.execute("SELECT * FROM vault")
+            array = cursor.fetchall()
+
+            lbl1 = Label(window, text=(array[i][1]), font=("Helvetica", 12))
+            lbl1.grid(column=0, row=i + 3)
+            lbl1 = Label(window, text=(array[i][2]), font=("Helvetica", 12))
+            lbl1.grid(column=1, row=i + 3)
+            lbl1 = Label(window, text=(array[i][3]), font=("Helvetica", 12))
+            lbl1.grid(column=2, row=i + 3)
+
+            btn = Button(window, text="Delete", command=partial(removeEntry, array[i][0]))
+            btn.grid(column=3, row=i + 3, pady=10)
+
+            i += 1
+
+            cursor.execute("SELECT * FROM vault")
+            if (len(cursor.fetchall()) <= i):
+                break
+
 
 cursor.execute("SELECT * FROM masterpassword")
 if cursor.fetchall():
