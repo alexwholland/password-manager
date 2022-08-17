@@ -29,14 +29,13 @@ def popUp(text):
     return answer
 
 
-
 window = Tk()
 
 window.title("Password Manager")
 
 
 def hashPassword(input):
-    hash = hashlib.md5(input)
+    hash = hashlib.sha256(input)
     hash = hash.hexdigest()
 
     return hash
