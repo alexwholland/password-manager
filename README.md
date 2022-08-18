@@ -5,6 +5,6 @@ Locally store all your passwords securely, so you don't have to worry about reme
 ## TODO
 
 - Fix window sizing cutoffs
-- Add recovery key feature
-- Add password and data field encryption
+- Create one deticated GUI for creating a password input
+- Create a password generator
 - TBD
