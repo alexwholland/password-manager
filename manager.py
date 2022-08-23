@@ -55,7 +55,11 @@ password TEXT NOT NULL);
 # Create PopUp
 def popUp(text):
     answer = simpledialog.askstring("input string", text)
+    return answer
 
+
+def pop(text):
+    answer = simpledialog.askstring("input string", text)
     return answer
 
 
@@ -235,6 +239,7 @@ def vaultScreen():
         widget.destroy()
 
     def addEntry():
+
         text1 = "Website"
         text2 = "Username"
         text3 = "Password"
@@ -246,7 +251,14 @@ def vaultScreen():
         VALUES(?, ?, ?) """
         cursor.execute(insert_fields, (website, username, password))
         db.commit()
+        vaultScreen()
 
+    def updateEntry(input):
+        update = "Type new password"
+        password = encrypt(popUp(update).encode(), encryptionKey)
+
+        cursor.execute("UPDATE vault SET password = ? WHERE id = ?", (password, input,))
+        db.commit()
         vaultScreen()
 
     def removeEntry(input):
@@ -254,7 +266,7 @@ def vaultScreen():
         db.commit()
         vaultScreen()
 
-    window.geometry('750x550')
+    window.geometry('850x450')
     window.resizable(height=None, width=None)
     lbl = Label(window, text="Password Vault")
     lbl.grid(column=1)
@@ -286,6 +298,8 @@ def vaultScreen():
             lbl3 = Label(window, text=(decrypt(array[i][3], encryptionKey)), font=("Helvetica", 12))
             lbl3.grid(column=2, row=(i + 3))
 
+            btn1 = Button(window, text="Update", command=partial(updateEntry, array[i][0]))
+            btn1.grid(column=5, row=i + 3, pady=10)
             btn = Button(window, text="Delete", command=partial(removeEntry, array[i][0]))
             btn.grid(column=3, row=(i + 3), pady=10)
 
