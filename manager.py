@@ -10,6 +10,8 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.backends import default_backend
 from cryptography.fernet import Fernet
 
+from passgen import passGenerator
+
 backend = default_backend()
 salt = b'2444'
 
@@ -274,6 +276,9 @@ def vaultScreen():
     btn = Button(window, text="+", command=addEntry)
     btn.grid(column=1, pady=10)
 
+    btn2 = Button(window, text="Generate Password", command=passGenerator)
+    btn2.grid(column=3, pady=10)
+
     lbl = Label(window, text="Website")
     lbl.grid(row=2, column=0, padx=80)
     lbl = Label(window, text="Username")
@@ -297,6 +302,7 @@ def vaultScreen():
             lbl2.grid(column=1, row=(i + 3))
             lbl3 = Label(window, text=(decrypt(array[i][3], encryptionKey)), font=("Helvetica", 12))
             lbl3.grid(column=2, row=(i + 3))
+
 
             btn1 = Button(window, text="Update", command=partial(updateEntry, array[i][0]))
             btn1.grid(column=5, row=i + 3, pady=10)
