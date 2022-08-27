@@ -17,7 +17,13 @@ def passGenerator():
 
         password = ""
 
-        for x in range(int(myEntry.get())):
+        maxCount = int(myEntry.get())
+        if maxCount > 128:
+            l = Label(window, text="Too many characters")
+            l.pack(pady=20)
+            return
+
+        for x in range(maxCount):
             password += chr(randint(33, 126))
 
         pwEntry.insert(0, password)
