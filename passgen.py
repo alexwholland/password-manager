@@ -1,6 +1,7 @@
 from tkinter import *
 from random import randint
 
+global_label = None
 
 def passGenerator():
     # Password Generator window.
@@ -12,17 +13,21 @@ def passGenerator():
         """
         Generate a password with random ASCII characters
         """
-        # TODO add a limit of maximum allowed characters with error handling
+        # TODO remove global variable and reposition the label location
         pwEntry.delete(0, END)
 
         password = ""
 
         maxCount = int(myEntry.get())
+        global global_label
         if maxCount > 128:
-            l = Label(window, text="Too many characters")
-            l.pack(pady=20)
+            if not global_label:
+                global_label = Label(window, text="Too many characters")
+                global_label.pack(pady=20)
             return
 
+        #Ideally the global label should be removed after a valid password number is entered
+        #global_label.after(0, global_label.destroy)
         for x in range(maxCount):
             password += chr(randint(33, 126))
 
