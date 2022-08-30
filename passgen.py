@@ -27,7 +27,7 @@ def passGenerator():
         if max_password >= 128:
             if not global_label:
                 global_label = Label(window, text="Too many characters")
-                global_label.pack(pady=20)
+                global_label.pack(side=window.BOTTOM)
             return True
         return False
 

@@ -75,7 +75,6 @@ window.title("Password Vault")
 def hashPassword(input):
     hash1 = hashlib.sha256(input)
     hash1 = hash1.hexdigest()
-
     return hash1
 
 
@@ -83,11 +82,12 @@ def createMasterPassword():
     for widget in window.winfo_children():
         widget.destroy()
 
-    window.geometry('250x125')
+    window.geometry('250x155')
     lbl = Label(window, text="Choose a Master Password")
     lbl.config(anchor=CENTER)
     lbl.pack()
 
+    # Should eventually add a show password button/option
     txt = Entry(window, width=20, show="*")
     txt.pack()
     txt.focus()
@@ -132,8 +132,10 @@ def recoveryScreen(key):
     for widget in window.winfo_children():
         widget.destroy()
 
-    window.geometry('250x125')
-    lbl = Label(window, text="Save this key to be able to recover account")
+    window.geometry('280x155')
+    lbl = Label(window, text="Save this key to a secure location.\n "
+                             "If you forget your master password, you can\n "
+                             "use this key to recover your account")
     lbl.config(anchor=CENTER)
     lbl.pack()
 
@@ -183,7 +185,7 @@ def resetScreen():
             createMasterPassword()
         else:
             txt.delete(0, 'end')
-            lbl1.config(text='Wrong Key')
+            lbl1.config(text='Invalid Key')
 
     btn = Button(window, text="Check Key", command=checkRecoveryKey)
     btn.pack(pady=5)
@@ -196,9 +198,9 @@ def loginScreen():
     for widget in window.winfo_children():
         widget.destroy()
 
-    window.geometry('250x125')
+    window.geometry('250x155')
 
-    lbl = Label(window, text="Enter  Master Password")
+    lbl = Label(window, text="Enter Master Password")
     lbl.config(anchor=CENTER)
     lbl.pack()
 
