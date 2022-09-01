@@ -5,9 +5,15 @@ Locally store all your passwords securely, so you don't have to worry about reme
 ## TODO
 
 - Fix window sizing cutoffs
-- Create one deticated GUI for creating a password input
-- Create a password generator
-   - Create copy to clipboard functionality 
-   - allow for user password rules
+  - Main screen is still cutoff when an entry is created (this can be fixed when update password functionality is added)
+- Create one deticated GUI for creating a website/username/password input
 - Create Update password functionality
 - TBD
+
+## Gallery
+
+<p align="center">
+    Password generator popup
+</p>
+
+![](Gallery/passwordGenerator.png)
