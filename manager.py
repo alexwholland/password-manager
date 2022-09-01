@@ -69,11 +69,11 @@ def pop(text):
 window = Tk()
 window.update()
 
-window.title("Password Vault")
+window.title("Password Manager")
 
 
-def hashPassword(input):
-    hash1 = hashlib.sha256(input)
+def hashPassword(password):
+    hash1 = hashlib.sha256(password)
     hash1 = hash1.hexdigest()
     return hash1
 
@@ -272,7 +272,7 @@ def vaultScreen():
 
     window.geometry('850x450')
     window.resizable(height=None, width=None)
-    lbl = Label(window, text="Password Vault")
+    lbl = Label(window, text="Password Manager")
     lbl.grid(column=1)
 
     btn = Button(window, text="+", command=addEntry)
