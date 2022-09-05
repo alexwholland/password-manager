@@ -191,14 +191,6 @@ def resetScreen():
     btn.pack(pady=5)
 
 
-# def getPasswordFromDatabase(password_input):
-#     """
-#     Get the user inputted password from the database
-#     TODO: Currently not working
-#     """
-#     cursor.execute('SELECT * FROM masterpassword WHERE id = 1 AND recoveryKey = ?', [password_input])
-
-
 def loginScreen():
     """
     Login Screen for a user with a pre-existing master password
@@ -303,7 +295,7 @@ def vaultScreen():
             cursor.execute('SELECT * FROM vault')
             array = cursor.fetchall()
 
-            if z(len(array) == 0):
+            if (len(array) == 0):
                 break
 
             lbl1 = Label(window, text=(decrypt(array[i][1], encryptionKey)), font=("Helvetica", 12))
