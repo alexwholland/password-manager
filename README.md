@@ -4,6 +4,7 @@ Locally store all your passwords securely, so you don't have to worry about reme
 
 ## TODO
 
+- Migrate TODO list to Github issues
 - Fix window sizing cutoffs
   - Main screen is still cutoff when an entry is created (this can be fixed when update password functionality is added)
 - Create one dedicated GUI for creating a website/username/password input
