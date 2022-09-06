@@ -24,6 +24,7 @@ kdf = PBKDF2HMAC(
 )
 
 encryptionKey = 0
+password_input = None
 
 
 def encrypt(message: bytes, key: bytes) -> bytes:
@@ -213,17 +214,20 @@ def loginScreen():
     lbl1.pack(side=TOP)
 
     def getMasterPassword():
-        checkHashedPassword = hashPassword(txt.get().encode('utf-8'))
-        global encryptionKey
-        encryptionKey = base64.urlsafe_b64encode(kdf.derive(txt.get().encode()))
-        cursor.execute('SELECT * FROM masterpassword WHERE id = 1 AND password = ?', [(checkHashedPassword)])
+        global password_input
+        password_input = txt.get().encode()
+        check_hashed_password = hashPassword(txt.get().encode('utf-8'))
+        cursor.execute('SELECT * FROM masterpassword WHERE id = 1 AND password = ?', [check_hashed_password])
         return cursor.fetchall()
 
     def checkPassword():
         password = getMasterPassword()
-
         if password:
             vaultScreen()
+            global encryptionKey
+            global password_input
+            # The encryption key must only be run once to avoid invalidation when checking passwords
+            encryptionKey = base64.urlsafe_b64encode(kdf.derive(password_input))
         else:
             txt.delete(0, 'end')
             lbl1.config(text="Wrong Password")
