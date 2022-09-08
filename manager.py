@@ -213,21 +213,39 @@ def loginScreen():
     lbl1.config(anchor=CENTER)
     lbl1.pack(side=TOP)
 
+    # Currently broken fix for issue #1
+
+    # def getMasterPassword():
+    #     global password_input
+    #     password_input = txt.get().encode()
+    #     check_hashed_password = hashPassword(txt.get().encode('utf-8'))
+    #     cursor.execute('SELECT * FROM masterpassword WHERE id = 1 AND password = ?', [check_hashed_password])
+    #     return cursor.fetchall()
+    #
+    # def checkPassword():
+    #     password = getMasterPassword()
+    #     if password:
+    #         vaultScreen()
+    #         global encryptionKey
+    #         global password_input
+    #         # The encryption key must only be run once to avoid invalidation when checking passwords
+    #         encryptionKey = base64.urlsafe_b64encode(kdf.derive(password_input))
+    #     else:
+    #         txt.delete(0, 'end')
+    #         lbl1.config(text="Wrong Password")
+
     def getMasterPassword():
-        global password_input
-        password_input = txt.get().encode()
-        check_hashed_password = hashPassword(txt.get().encode('utf-8'))
-        cursor.execute('SELECT * FROM masterpassword WHERE id = 1 AND password = ?', [check_hashed_password])
+        checkHashedPassword = hashPassword(txt.get().encode('utf-8'))
+        global encryptionKey
+        encryptionKey = base64.urlsafe_b64encode(kdf.derive(txt.get().encode()))
+        cursor.execute('SELECT * FROM masterpassword WHERE id = 1 AND password = ?', [(checkHashedPassword)])
         return cursor.fetchall()
 
     def checkPassword():
         password = getMasterPassword()
+
         if password:
             vaultScreen()
-            global encryptionKey
-            global password_input
-            # The encryption key must only be run once to avoid invalidation when checking passwords
-            encryptionKey = base64.urlsafe_b64encode(kdf.derive(password_input))
         else:
             txt.delete(0, 'end')
             lbl1.config(text="Wrong Password")
@@ -308,7 +326,6 @@ def vaultScreen():
             lbl2.grid(column=1, row=(i + 3))
             lbl3 = Label(window, text=(decrypt(array[i][3], encryptionKey)), font=("Helvetica", 12))
             lbl3.grid(column=2, row=(i + 3))
-
 
             btn1 = Button(window, text="Update", command=partial(updateEntry, array[i][0]))
             btn1.grid(column=5, row=i + 3, pady=10)
